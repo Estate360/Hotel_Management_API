@@ -1,5 +1,5 @@
 const RoomType = require("../models/roomType");
-const AppErrorHandler = require("../utils/AppErrorHandler");
+// const AppErrorHandler = require("../utils/AppErrorHandler");
 const { catchAsync } = require("../utils/catchAsync");
 
 //Create a new Room Type
@@ -7,7 +7,7 @@ exports.createRoomType = catchAsync(async (req, res, next) => {
   const roomType = await RoomType.create(req.body);
 
   res.status(201).json({
-    message: "Room Type created 😎",
+    message: "Room Type created",
     status: "success",
     data: {
       roomType,

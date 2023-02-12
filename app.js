@@ -15,10 +15,10 @@ app.use(cors()); // allow cross-origin request
 app.use(express.json()); // Use JSON parser middleware
 
 //Room Routes Middleware
-app.use("/api/v1/", roomsRouter);
+app.use("/api/v1", roomsRouter);
 
 //Room Type Routes Middleware
-app.use("/api/v1/", roomTypesRouter);
+app.use("/api/v1", roomTypesRouter);
 
 //Wrong route error handler middleware
 app.use("*", (req, res, next) => {

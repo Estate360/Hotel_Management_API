@@ -2,7 +2,6 @@ const Room = require("../models/rooms");
 const RoomType = require("../models/roomType");
 const AppErrorHandler = require("../utils/AppErrorHandler");
 const { catchAsync } = require("../utils/catchAsync");
-const GetRoomQuery = require("../utils/roomQuery");
 
 //Create a new Room
 exports.createRoom = catchAsync(async (req, res, next) => {
@@ -12,7 +11,7 @@ exports.createRoom = catchAsync(async (req, res, next) => {
   const room = await Room.create(req.body);
 
   res.status(201).json({
-    message: "Room created successfully 😎",
+    message: "Room created successfully",
     status: "success",
     data: {
       room,
@@ -29,7 +28,7 @@ exports.findOneRoom = catchAsync(async (req, res, next) => {
       new AppErrorHandler(`The room ID: ${req.params.id} does not exist`, 404)
     );
   res.status(200).json({
-    message: "Room found 😎",
+    message: "Room found successfully",
     status: "success",
     data: {
       room,
@@ -37,15 +36,30 @@ exports.findOneRoom = catchAsync(async (req, res, next) => {
   });
 });
 
-//Find all Room
+// //Find all Room
 exports.findAllRooms = catchAsync(async (req, res, next) => {
-  // const rooms = await Room.find(req.query);
-  const rooms = new GetRoomQuery();
+  const { search, roomType, minPrice, maxPrice } = req.query;
 
+  let query = {};
+
+  if (search) query.name = { $regex: search, $options: "i" };
+  if (roomType) {
+    const roomTypeId = await RoomType.findOne({ name: roomType });
+    query.roomType = roomTypeId;
+  }
+  if (minPrice) query.price = { $gte: minPrice };
+  if (maxPrice) {
+    if (minPrice) {
+      query.price.$lte = maxPrice;
+    } else {
+      query.price = { $lte: maxPrice };
+    }
+  }
+  const rooms = await Room.find(query);
   res.status(200).json({
-    message: "All Rooms found 😎",
-    status: "success",
+    message: "All Rooms found successfully",
     result: rooms.length,
+    status: "success",
     data: {
       rooms,
     },
@@ -65,7 +79,7 @@ exports.updateRoom = catchAsync(async (req, res, next) => {
     );
 
   res.status(200).json({
-    message: "Room Types Updated 😎",
+    message: "Room Types Updated successfully",
     status: "success",
     result: room.length,
     data: {
