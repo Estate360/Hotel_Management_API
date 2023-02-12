@@ -20,12 +20,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 3. Run `npm install` to install the required dependencies.
 
+Optionally, you can;
 Create a .env file and add the following environment variables:
-
-MONGODB_URI=mongodb://<dbuser>:<dbpassword>@<hostname>:<port>/<dbname>
+DATABASE=mongodb+srv://<username>:<password>@cluster0.ynrdrfw.mongodb.net/Hotel-Management?retryWrites=true&w=majority
 PORT=5000
 
-4. Run `npm start` to start the server.
+4. Run `npm run dev` to start the server.
 
 The API should now be running at http://localhost:5000 or http://localhost:8800.
 
